@@ -1,0 +1,23 @@
+import subprocess
+
+def create_volume_group(group_name, device):
+    subprocess.run(['sudo', 'vgcreate', group_name, device])
+
+def create_logical_volume(group_name, lv_name, size):
+    subprocess.run(['sudo', 'lvcreate', '-L', size, '-n', lv_name, group_name])
+
+def main():
+    group_name = input("Enter the name of the volume group: ")
+    device = input("Enter the device for the volume group (e.g., /dev/sdb1): ")
+    create_volume_group(group_name, device)
+    
+    num_logical_volumes = int(input("Enter the number of logical volumes: "))
+    for i in range(num_logical_volumes):
+        lv_name = input(f"Enter the name for logical volume {i+1}: ")
+        lv_size = input(f"Enter the size for logical volume {i+1} (e.g., 2G, 500M): ")
+        create_logical_volume(group_name, lv_name, lv_size)
+    
+    print("Volume group and logical volumes created successfully!")
+
+if __name__ == "__main__":
+    main()
